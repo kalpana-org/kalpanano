@@ -129,7 +129,7 @@ class UserPlugin(GUIPlugin):
         data['writtentoday'] = self.written_today(data['totalwords'])
         day_goal = self.settings['goal']['words'] // self.settings['goal']['days']
         data['remainingtoday'] = day_goal - data['writtentoday']
-        chstr = '<tr><td>{}</td><td>{}</td><td>{}</td></tr>'
+        chstr = '<tr><td align="right">{}</td><td align="right">{}</td><td align="right">{}</td></tr>'
         def get_diff(length):
             if not self.settings['chapter']['length']:
                 return ''
