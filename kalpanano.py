@@ -130,13 +130,13 @@ class UserPlugin(GUIPlugin):
         day_goal = self.settings['goal']['words'] // self.settings['goal']['days']
         data['remainingtoday'] = day_goal - data['writtentoday']
         chstr = '<tr><td align="right">{}</td><td align="right">{}</td><td align="right">{}</td></tr>'
-        def get_diff(length):
-            if not self.settings['chapter']['length']:
+        def get_diff(chapter, length):
+            if not self.settings['chapter']['length'] or chapter == 0:
                 return ''
             else:
                 return self.settings['chapter']['length']-length
         data['chapters'] = ''.join(\
-                    [chstr.format(n, c, get_diff(c))
+                    [chstr.format(n, c, get_diff(n,c))
                      for n, c in enumerate(chapters)])
         self.sidebar.update_data(data)
 
