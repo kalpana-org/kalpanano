@@ -134,7 +134,7 @@ class UserPlugin(GUIPlugin):
             if not self.settings['chapter']['length']:
                 return ''
             else:
-                return self.settings['chapter']['length']-c
+                return self.settings['chapter']['length']-length
         data['chapters'] = ''.join(\
                     [chstr.format(n, c, get_diff(c))
                      for n, c in enumerate(chapters)])
