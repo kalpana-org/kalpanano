@@ -1,0 +1,17 @@
+{
+  "day": 1,
+  "goal": {
+    "days": 30,
+    "words": 50000
+  },
+  "wordcount": {
+    "endpoint": "== EOF ==",
+    "ignorestr": "\\[.+?\\]"
+  },
+  "chapter": {
+    "length": 3600,
+    "trigger": ">>",
+    "regex": ">> +CHAPTER \\d+ ?[:-] .+?<<"
+  },
+  "logdir": "~/Dropbox/nanologs"
+}

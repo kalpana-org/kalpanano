@@ -1,0 +1,43 @@
+<html>
+<head>
+<style type="text/css">
+    body {{
+        background-color: #333;
+        color: #ddd;
+        padding: 3px;
+    }}
+    th {{
+        padding-right:15px;
+    }}
+    div {{
+        border-color: red;
+        border-style: solid;
+    }}
+</style>
+</head>
+<body>
+<div id="caption"><b>Day {day}</b> - <i>{percent}% of total goal</i></div>
+<br>
+<table id="chapter">
+    <tr>
+        <th>Chapter</th>
+        <th>Words</th>
+        <th>Diff</th>
+    </tr>
+    {chapters}
+    <tr></tr>
+</table>
+<div id="written">
+    <b>Written today:</b> {writtentoday}<br>
+    <b>Remaining today:</b> {remainingtoday}<br>
+    <b>Total wordcount:</b> {totalwords}<br>
+</div>
+
+<table>
+    <tr>
+        <th span=2>Earlier years:</th>
+    </tr>
+    {prevyears}
+</table>
+</body>
+</html>
