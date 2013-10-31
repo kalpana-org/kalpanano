@@ -35,7 +35,7 @@ class UserPlugin(GUIPlugin):
     def nano_command(self, arg):
         oldday = self.day
         if arg == '?':
-            self.print_('Help lalalala')
+            self.print_('xs to init nanomode, xd to show day, xd+ to increase day')
         elif arg == 'd':
             self.print_('Day is {}'.format(self.day))
         elif arg == 'd+':
