@@ -72,9 +72,9 @@ class UserPlugin(GUIPlugin):
         wc, chapters = self.get_wordcount()
         log['chapters'] = chapters
         try:
-            lastwc = log['days'][-1][2]
+            lastwc = int(log['days'][-1].split(';')[2])
         except IndexError:
-            lastwc = ['',-1,-1]
+            lastwc = 0
         if wc == lastwc:
             return
         log['days'].append('{};{};{}'.format(datetime.now(), self.day, wc))
