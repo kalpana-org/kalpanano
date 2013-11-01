@@ -103,7 +103,7 @@ class UserPlugin(GUIPlugin):
         def count_words(lines):
             return len(re.findall(r'\S+', '\n'.join(lines)))
         text = self.textarea.toPlainText()
-        text = re.sub(self.settings['wordcount']['ignorestr'], '', text, re.DOTALL)
+        text = re.sub(self.settings['wordcount']['ignorestr'], '', text, flags=re.DOTALL)
         lines = text.splitlines()
         endpoint = self.settings['wordcount']['endpoint']
         if endpoint in lines:
