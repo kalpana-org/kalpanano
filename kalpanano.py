@@ -23,7 +23,6 @@ class UserPlugin(GUIPlugin):
         # NaNo-shit
         self.activated = False
 
-
     def read_config(self):
         self.configfile = os.path.join(self.configpath, 'kalpanano.conf')
         defaultconfigfile = os.path.join(self.local_path, 'defaultconfig.json')
@@ -50,6 +49,7 @@ class UserPlugin(GUIPlugin):
             self.print_('Day changed to {}'.format(self.day))
         elif arg == 's':
             if not self.activated:
+                self.reconnect_wordcount_titlebar()
                 self.print_('Nano mode initiated.')
                 self.activated = True
             else:
@@ -59,6 +59,17 @@ class UserPlugin(GUIPlugin):
             self.settings = read_json(self.configfile)
             self.settings['day'] = self.day
             write_json(self.configfile, self.settings)
+
+    def reconnect_wordcount_titlebar(self):
+        """
+        Change the wordcount in the title
+        so that it is the same as in the nano sidebar.
+        """
+        self.textarea.document().contentsChanged.disconnect(self.textarea.contents_changed)
+        def update_wordcount_in_titlebar():
+            self.textarea.wordcount_changed.emit(self.get_wordcount()[0])
+        self.textarea.document().contentsChanged.connect(update_wordcount_in_titlebar)
+        update_wordcount_in_titlebar()
 
 
     def on_save(self):
