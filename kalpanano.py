@@ -175,4 +175,4 @@ class Sidebar(QtGui.QTextEdit):
     def update_data(self, data):
         self.setHtml(self.html.format(**data))
         # Ugly pos crappy hack
-        self.setFixedWidth(self.sizeHint().width()*0.9)
+        self.setFixedWidth(self.sizeHint().width()*0.81)
