@@ -1,5 +1,6 @@
 from datetime import datetime
 import itertools
+from math import ceil
 import os.path
 import re
 
@@ -138,7 +139,7 @@ class UserPlugin(GUIPlugin):
         data['totalwords'], chapters = self.get_wordcount()
         data['percent'] = int(data['totalwords']/self.settings['goal']['words']*100)
         data['writtentoday'] = self.written_today(data['totalwords'])
-        day_goal = self.settings['goal']['words'] // self.settings['goal']['days']
+        day_goal = ceil(self.settings['goal']['words'] / self.settings['goal']['days'])
         data['remainingtoday'] = day_goal - data['writtentoday']
         chstr = '<tr><td align="right">{}</td><td align="right">{}</td><td align="right">{}</td></tr>'
         def get_diff(chapter, length):
