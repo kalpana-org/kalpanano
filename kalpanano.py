@@ -15,7 +15,7 @@ class UserPlugin(GUIPlugin):
         super().__init__(objects, get_path)
         self.sidebar = Sidebar(objects['textarea'], get_path())
         objects['mainwindow'].inner_h_layout.addWidget(self.sidebar)
-        self.configpath = objects['settings manager'].get_config_directory()
+        self.configpath = objects['settingsmanager'].get_config_directory()
         self.textarea = objects['textarea']
         self.textarea.file_saved.connect(self.on_save)
         self.local_path = get_path()
@@ -50,7 +50,8 @@ class UserPlugin(GUIPlugin):
             self.print_('Day changed to {}'.format(self.day))
         elif arg == 's':
             if not self.activated:
-                self.reconnect_wordcount_titlebar()
+                if self.settings['override title wordcount']:
+                    self.reconnect_wordcount_titlebar()
                 self.print_('Nano mode initiated.')
                 self.activated = True
             else:
@@ -140,7 +141,11 @@ class UserPlugin(GUIPlugin):
         data['percent'] = int(data['totalwords']/self.settings['goal']['words']*100)
         data['writtentoday'] = self.written_today(data['totalwords'])
         day_goal = ceil(self.settings['goal']['words'] / self.settings['goal']['days'])
-        data['remainingtoday'] = day_goal - data['writtentoday']
+        data['origdaygoal'] = day_goal - data['writtentoday']
+        data['curdaygoal'] = ceil(((self.settings['goal']['words'] - (data['totalwords'] - data['writtentoday'])) / (self.settings['goal']['days']-self.day+1)) - data['writtentoday'])
+        data['lefttopar'] = ceil((self.settings['goal']['words'] / self.settings['goal']['days'])*self.day - data['totalwords'])
+        data['todos'] = self.textarea.toPlainText().count('TODO')
+        data['todocolor'] = ('', 'style="color: red"')[data['todos'] > 0]
         chstr = '<tr><td align="right">{}</td><td align="right">{}</td><td align="right">{}</td></tr>'
         def get_diff(chapter, length):
             if not self.settings['chapter']['length'] or chapter == 0:
