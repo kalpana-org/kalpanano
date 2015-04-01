@@ -22,6 +22,7 @@ class UserPlugin(GUIPlugin):
         self.hotkeys = {'Ctrl+B': self.toggle_sidebar}
         self.commands = {'x': (self.nano_command, 'NaNoWriMo command (x? for help)')}
         # NaNo-shit
+        self.offset = 0
         self.activated = False
 
     def read_config(self):
@@ -52,6 +53,10 @@ class UserPlugin(GUIPlugin):
             if not self.activated:
                 if self.settings['override title wordcount']:
                     self.reconnect_wordcount_titlebar()
+                logfile_path = self.get_logfile_path()
+                if os.path.exists(logfile_path):
+                    log = read_json(logfile_path)
+                    self.offset = log.get('offset', 0)
                 self.print_('Nano mode initiated.')
                 self.activated = True
             else:
@@ -132,12 +137,16 @@ class UserPlugin(GUIPlugin):
         chapterlines.append(len(lines))
         chapter_wc = [count_words(lines[chapterlines[i]:chapterlines[i+1]])
                       for i in range(len(chapterlines)-1)]
-        return sum(chapter_wc), chapter_wc
+        return sum(chapter_wc)-self.offset, chapter_wc
 
 
     def update_sidebar(self):
         data = {'day': self.day, 'chapters':'', 'prevyears':''}
         data['totalwords'], chapters = self.get_wordcount()
+        if self.offset > 0:
+            data['offset'] = "<br><em><b>Offset:</b> {}</em>".format(self.offset)
+        else:
+            data['offset'] = ''
         data['percent'] = int(data['totalwords']/self.settings['goal']['words']*100)
         data['writtentoday'] = self.written_today(data['totalwords'])
         day_goal = ceil(self.settings['goal']['words'] / self.settings['goal']['days'])
