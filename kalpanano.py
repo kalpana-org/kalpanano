@@ -101,7 +101,7 @@ class UserPlugin(GUIPlugin):
 
     def get_logfile_path(self):
         root, fname = os.path.split(self.textarea.file_path)
-        return root + '/.' + fname + '.nanolog'
+        return os.path.join(root, '.' + fname + '.nanolog')
 
 
     def written_today(self, total_wordcount):
