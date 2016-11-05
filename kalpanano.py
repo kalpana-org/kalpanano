@@ -32,7 +32,6 @@ class UserPlugin(GUIPlugin):
         self.settings = read_json(self.configfile)
         self.day = self.settings['day']
 
-
     def nano_command(self, arg):
         oldday = self.day
         if arg == '?':
@@ -88,11 +87,9 @@ class UserPlugin(GUIPlugin):
         log['days'].append('{};{};{}'.format(datetime.now(), self.day, wc))
         write_json(logfile_path, log)
 
-
     def get_logfile_path(self):
         root, fname = os.path.split(self.textarea.file_path)
         return os.path.join(root, '.' + fname + '.nanolog')
-
 
     def written_today(self, total_wordcount):
         logfile_path = self.get_logfile_path()
@@ -105,7 +102,6 @@ class UserPlugin(GUIPlugin):
                     offset = int(wc)
                     break
         return total_wordcount - offset
-
 
     def get_wordcount(self):
         def count_words(lines):
@@ -128,7 +124,6 @@ class UserPlugin(GUIPlugin):
         chapter_wc = [count_words(lines[chapterlines[i]:chapterlines[i+1]])
                       for i in range(len(chapterlines)-1)]
         return sum(chapter_wc)-self.offset, chapter_wc
-
 
     def update_sidebar(self):
         data = {'day': self.day, 'chapters':'', 'prevyears':''}
@@ -156,7 +151,6 @@ class UserPlugin(GUIPlugin):
                      for n, c in enumerate(chapters)])
         self.sidebar.update_data(data)
 
-
     def toggle_sidebar(self):
         if not self.activated:
             self.error('NaNo mode not initiated!')
@@ -166,7 +160,6 @@ class UserPlugin(GUIPlugin):
         else:
             self.sidebar.show()
             self.update_sidebar()
-
 
 
 class Sidebar(QtGui.QTextEdit):
