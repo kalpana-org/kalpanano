@@ -51,14 +51,14 @@ class UserPlugin(GUIPlugin):
             self.print_('Day changed to {}'.format(self.day))
         elif arg == 's':
             if not self.activated:
-                if self.settings['override title wordcount']:
-                    self.reconnect_wordcount_titlebar()
                 logfile_path = self.get_logfile_path()
                 if os.path.exists(logfile_path):
                     log = read_json(logfile_path)
                     self.offset = log.get('offset', 0)
                 self.print_('Nano mode initiated.')
                 self.activated = True
+                if self.settings['override title wordcount']:
+                    self.textarea.wordcount_changed.emit(self.get_wordcount()[0])
             else:
                 self.error('Nano mode already running!')
         # Update the config just in case
@@ -67,21 +67,11 @@ class UserPlugin(GUIPlugin):
             self.settings['day'] = self.day
             write_json(self.configfile, self.settings)
 
-    def reconnect_wordcount_titlebar(self):
-        """
-        Change the wordcount in the title
-        so that it is the same as in the nano sidebar.
-        """
-        self.textarea.document().contentsChanged.disconnect(self.textarea.contents_changed)
-        def update_wordcount_in_titlebar():
-            self.textarea.wordcount_changed.emit(self.get_wordcount()[0])
-        self.textarea.document().contentsChanged.connect(update_wordcount_in_titlebar)
-        update_wordcount_in_titlebar()
-
-
     def on_save(self):
         if not self.activated:
             return
+        if self.settings['override title wordcount']:
+            self.textarea.wordcount_changed.emit(self.get_wordcount()[0])
         logfile_path = self.get_logfile_path()
         if os.path.exists(logfile_path):
             log = read_json(logfile_path)
